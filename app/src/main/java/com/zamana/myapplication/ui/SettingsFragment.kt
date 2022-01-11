@@ -1,25 +1,23 @@
-package com.zamana.myapplication.ui.home
+package com.zamana.myapplication.ui
 
 import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zamana.myapplication.R
-import com.zamana.myapplication.databinding.DialogAddBinding
+import com.zamana.myapplication.databinding.FragmentHome1Binding
 import com.zamana.myapplication.databinding.FragmentHomeBinding
 import com.zamana.myapplication.model.University
-import com.zamana.myapplication.reposytory.UniversityRepository
-import com.zamana.myapplication.ui.AddBottomSheetFragment
-import com.zamana.myapplication.ui.AddDialog
+import com.zamana.myapplication.ui.home.HomeViewModel
+import com.zamana.myapplication.ui.home.HomeViewModelFactory
 import com.zamana.myapplication.ui.home.adapter.UniversityAdapter
 
-class HomeFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
-    lateinit var binding: FragmentHomeBinding
+    lateinit var binding: FragmentHome1Binding
 
     lateinit var viewModel: HomeViewModel
 
@@ -31,7 +29,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHome1Binding.inflate(layoutInflater)
         return binding.root
     }
 
