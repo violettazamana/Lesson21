@@ -12,8 +12,6 @@ class HomeViewModel(
     val listData = MutableLiveData<ArrayList<University>>()
 
     fun getData() {
-        listData.value = repository.getListOfUniversity().map {
-            University(it.shortName, it.faculty.size)
-        } as ArrayList<University>
+        listData.value = repository.getListOfUniversity()
     }
 }
