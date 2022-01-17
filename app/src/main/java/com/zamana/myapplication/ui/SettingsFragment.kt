@@ -11,6 +11,7 @@ import com.zamana.myapplication.R
 import com.zamana.myapplication.databinding.FragmentHome1Binding
 import com.zamana.myapplication.databinding.FragmentHomeBinding
 import com.zamana.myapplication.model.University
+import com.zamana.myapplication.reposytory.SharedPreferencesRepository
 import com.zamana.myapplication.ui.home.HomeViewModel
 import com.zamana.myapplication.ui.home.HomeViewModelFactory
 import com.zamana.myapplication.ui.home.adapter.UniversityAdapter
@@ -22,6 +23,8 @@ class SettingsFragment : Fragment() {
     lateinit var viewModel: HomeViewModel
 
     private var parameterForDialog = 1
+
+    lateinit var sharePreferences: SharedPreferencesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +44,8 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharePreferences = SharedPreferencesRepository(requireContext())
+        binding.userName.text = sharePreferences.getUserName()
         viewModel.getData()
         binding.univeristyList.run {
             adapter = UniversityAdapter(requireContext())

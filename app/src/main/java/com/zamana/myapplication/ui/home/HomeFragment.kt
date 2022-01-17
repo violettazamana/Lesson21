@@ -12,6 +12,7 @@ import com.zamana.myapplication.R
 import com.zamana.myapplication.databinding.DialogAddBinding
 import com.zamana.myapplication.databinding.FragmentHomeBinding
 import com.zamana.myapplication.model.University
+import com.zamana.myapplication.reposytory.SharedPreferencesRepository
 import com.zamana.myapplication.reposytory.UniversityRepository
 import com.zamana.myapplication.ui.AddBottomSheetFragment
 import com.zamana.myapplication.ui.AddDialog
@@ -24,6 +25,8 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: HomeViewModel
 
     private var parameterForDialog = 1
+
+    lateinit var sharePreferences: SharedPreferencesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +46,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharePreferences = SharedPreferencesRepository(requireContext())
         viewModel.getData()
         binding.univeristyList.run {
             adapter = UniversityAdapter(requireContext())
@@ -59,6 +63,13 @@ class HomeFragment : Fragment() {
         }
         binding.info2.onClickInfo = {
             AddBottomSheetFragment().show(parentFragmentManager, "")
+        }
+
+        binding.saveUserName.setOnClickListener {
+            val userName = binding.userNameText.text.toString()
+            if (!userName.isBlank()) {
+                sharePreferences.saveUserName(userName)
+            }
         }
 //        AddDialog().show(parentFragmentManager, "")
 //        val view = DialogAddBinding.inflate(layoutInflater)
