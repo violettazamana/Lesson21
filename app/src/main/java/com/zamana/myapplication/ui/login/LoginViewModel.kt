@@ -14,18 +14,23 @@ class LoginViewModel(
 
     lateinit var onSaveUser: () -> Unit
     lateinit var showPhone: (phone: String) -> Unit
+    lateinit var showProgressBar: (isShow: Boolean) -> Unit
 
     val list = MutableLiveData<ArrayList<UserLogin>>()
 
     fun saveUser(login: String, password: String) {
+        showProgressBar(true)
         repository.saveUser(UserLogin(0, login, password))
         phoneRepository.saveUser(InfoUser(0, "+1212233", login))
         onSaveUser()
         loadList()
+        showProgressBar(false)
     }
 
     fun loadList() {
+        showProgressBar(true)
         list.value = repository.getList() as ArrayList
+        showProgressBar(false)
     }
 
     fun getPhone(login: String) {

@@ -45,6 +45,11 @@ class LoginFragment : Fragment() {
         viewModel.showPhone = {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
+        viewModel.showProgressBar = {
+            binding.progressView.visibility = if (it) {
+                View.VISIBLE
+            } else View.GONE
+        }
         binding.recyclerView.run {
             adapter = LoginAdapter(requireContext()) {
                 viewModel.getPhone(it)
