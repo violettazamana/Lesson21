@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zamana.myapplication.databinding.FragmentLoginBinding
 import com.zamana.myapplication.ui.home.HomeViewModel
 import com.zamana.myapplication.ui.home.HomeViewModelFactory
 import com.zamana.myapplication.ui.home.adapter.UniversityAdapter
 import com.zamana.myapplication.ui.login.adapter.LoginAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
@@ -43,16 +47,23 @@ class LoginFragment : Fragment() {
             binding.passwordText.setText("")
         }
         viewModel.showPhone = {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            requireActivity().runOnUiThread {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
         }
         viewModel.showProgressBar = {
-            binding.progressView.visibility = if (it) {
-                View.VISIBLE
-            } else View.GONE
+            binding.progressView.post {
+                binding.progressView.visibility = if (it) {
+                    View.VISIBLE
+                } else View.GONE
+            }
         }
         binding.recyclerView.run {
             adapter = LoginAdapter(requireContext()) {
-                viewModel.getPhone(it)
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.getPhone(it)
+                }
             }
             layoutManager = LinearLayoutManager(requireContext())
         }
@@ -65,6 +76,8 @@ class LoginFragment : Fragment() {
                 binding.passwordText.text.toString()
             )
         }
-        viewModel.loadList()
+        lifecycleScope.launch {
+            viewModel.loadList()
+        }
     }
 }

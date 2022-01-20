@@ -2,10 +2,12 @@ package com.zamana.myapplication.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
+import androidx.lifecycle.lifecycleScope
 import com.zamana.myapplication.R
 import com.zamana.myapplication.databinding.ActivityMainBinding
 import com.zamana.myapplication.ui.home.HomeFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,6 +17,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        lifecycleScope.launch {
+            delay(3000)
+            finish()
+            //do  finish splash
+        }
 //        AddDialog().show(supportFragmentManager, "")
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {

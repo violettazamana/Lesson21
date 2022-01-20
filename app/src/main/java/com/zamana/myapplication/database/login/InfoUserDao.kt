@@ -8,8 +8,8 @@ import androidx.room.Query
 interface InfoUserDao {
 
     @Insert
-    fun insertPhone(phone: InfoUser)
+    suspend fun insertPhone(phone: InfoUser)
 
     @Query("select * from InfoUser where :login = userLogin")
-    fun getPhone(login: String): InfoUser
+    suspend fun getPhone(login: String): InfoUser
 }

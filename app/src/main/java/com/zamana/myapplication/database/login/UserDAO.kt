@@ -6,17 +6,17 @@ import androidx.room.*
 interface UserDAO {
 
     @Insert
-    fun insertUser(user: UserLogin)
+    suspend fun insertUser(user: UserLogin)
 
     @Query("select * from UserLogin")
-    fun getAllList(): List<UserLogin>
+    suspend fun getAllList(): List<UserLogin>
 
     @Query("select * from UserLogin where :userName = user_name")
-    fun getZlataListPassword(userName: String): List<UserLogin>
+    suspend fun getZlataListPassword(userName: String): List<UserLogin>
 
     @Update
-    fun updateUser(user: UserLogin)
+    suspend fun updateUser(user: UserLogin)
 
     @Delete
-    fun delete(user: UserLogin)
+    suspend fun delete(user: UserLogin)
 }

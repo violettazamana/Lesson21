@@ -8,9 +8,9 @@ class PhoneRepository {
 
     private val phoneDao = UserLoginDataBase.dataBase.infoDao()
 
-    fun saveUser(phone: InfoUser) {
+    suspend fun saveUser(phone: InfoUser) {
         phoneDao.insertPhone(phone)
     }
 
-    fun getList(login: String) = phoneDao.getPhone(login)
+    suspend fun getList(login: String) = phoneDao.getPhone(login)
 }

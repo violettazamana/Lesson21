@@ -14,7 +14,6 @@ object UserLoginDataBase {
                 AppDatabase::class.java, "database-name"
             )
                 .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
                 .build()
         }
     }

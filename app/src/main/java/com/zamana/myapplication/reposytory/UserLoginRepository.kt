@@ -7,9 +7,9 @@ class UserLoginRepository {
 
     private val userDao = UserLoginDataBase.dataBase.userDao()
 
-    fun saveUser(user: UserLogin) {
+    suspend fun saveUser(user: UserLogin) {
         userDao.insertUser(user)
     }
 
-    fun getList() = userDao.getZlataListPassword("zlata")
+    suspend fun getList() = userDao.getZlataListPassword("zlata")
 }
