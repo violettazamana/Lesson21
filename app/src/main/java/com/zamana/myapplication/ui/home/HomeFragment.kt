@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharePreferences = SharedPreferencesRepository(requireContext())
         viewModel.getData()
+//        viewModel.getCatList()
         binding.univeristyList.run {
             adapter = UniversityAdapter(requireContext())
             layoutManager = LinearLayoutManager(requireContext())

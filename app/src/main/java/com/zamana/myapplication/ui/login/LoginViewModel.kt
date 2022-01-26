@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zamana.myapplication.database.login.InfoUser
 import com.zamana.myapplication.database.login.UserLogin
+import com.zamana.myapplication.model.CatsItem
+import com.zamana.myapplication.reposytory.CatRepository
 import com.zamana.myapplication.reposytory.PhoneRepository
 import com.zamana.myapplication.reposytory.UserLoginRepository
 import kotlinx.coroutines.Dispatchers
@@ -13,9 +15,11 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val repository: UserLoginRepository,
-    private val phoneRepository: PhoneRepository
+    private val phoneRepository: PhoneRepository,
+    private val catRepository: CatRepository
 ) : ViewModel() {
 
+    lateinit var loadImages: (list: ArrayList<CatsItem>) -> Unit
     lateinit var onSaveUser: () -> Unit
     lateinit var showPhone: (phone: String) -> Unit
     lateinit var showProgressBar: (isShow: Boolean) -> Unit
@@ -41,5 +45,16 @@ class LoginViewModel(
 
     suspend fun getPhone(login: String) {
         showPhone(phoneRepository.getList(login).phoneNumber)
+    }
+
+    fun getCatList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = catRepository.searchCats()
+            if (response.isSuccessful) {
+                response.body()?.let { loadImages(it) }
+            } else {
+                response.errorBody()
+            }
+        }
     }
 }
