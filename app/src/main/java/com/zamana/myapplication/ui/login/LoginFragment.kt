@@ -46,10 +46,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadImages = {
-            requireActivity().runOnUiThread {
-                it.forEach {
-                    binding.containerImages.addView(createImageView(it.url))
-                }
+            it.forEach {
+                binding.containerImages.addView(createImageView(it.url))
             }
         }
         viewModel.getCatList()

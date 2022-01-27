@@ -9,6 +9,8 @@ import com.zamana.myapplication.model.CatsItem
 import com.zamana.myapplication.reposytory.CatRepository
 import com.zamana.myapplication.reposytory.PhoneRepository
 import com.zamana.myapplication.reposytory.UserLoginRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,12 +21,19 @@ class LoginViewModel(
     private val catRepository: CatRepository
 ) : ViewModel() {
 
+    var disposable: Disposable? = null
+
     lateinit var loadImages: (list: ArrayList<CatsItem>) -> Unit
     lateinit var onSaveUser: () -> Unit
     lateinit var showPhone: (phone: String) -> Unit
     lateinit var showProgressBar: (isShow: Boolean) -> Unit
 
     val list = MutableLiveData<ArrayList<UserLogin>>()
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable?.dispose()
+    }
 
     fun saveUser(login: String, password: String) {
         viewModelScope.launch {
@@ -48,13 +57,28 @@ class LoginViewModel(
     }
 
     fun getCatList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = catRepository.searchCats()
-            if (response.isSuccessful) {
-                response.body()?.let { loadImages(it) }
-            } else {
-                response.errorBody()
-            }
-        }
+        disposable = catRepository.getCats()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ response ->
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        loadImages(it)
+                    }
+                } else {
+                    response.errorBody()
+                }
+            },
+                { error ->
+                    error
+                }
+            )
     }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val response = catRepository.searchCats()
+//            if (response.isSuccessful) {
+//                response.body()?.let { loadImages(it) }
+//            } else {
+//                response.errorBody()
+//            }
+//        }
 }
